@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tween.js</title>
+    <style>
+        .box{
+            width: 700px;
+            height: 50px;
+            border:2px solid green;
+            background: pink;
+            border-radius: 10px;
+            position: relative;
+            /*overflow: hidden;*/
+            left: 200px;
+            top:10px;
+            display: inline-block;
+        }
+        .ball{
+            width:50px;
+            height:50px;
+            border-radius:50%;
+            background-color:black;
+            position: absolute;
+        }
+        #select3{
+            margin: 50px 0;
+        }
+        header{
+            text-align: center;
+        }
+        section{
+            margin: 100px auto;
+        }
+        footer{
+            margin: 50px 400px;
+        }
+        select{
+            padding: 5px;
+        }
+        .testBtn{
+            padding: 3px 15px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>Tween.js一款强大的js动画库</h1>
+</header>
+<section>
+    <div class="box" style="">
+        <div class="ball" ></div>
+    </div>
+</section>
+<footer>
+    <select name="" id="select1"></select>
+    <select name="" id="select2"></select>
+    <br>
+    总时间：<select name="" id="select3"></select><laber>秒</laber>
+    <br>
+    <button class="testBtn" onclick="test()" style="color: red;">测试</button>
+</footer>
+<script src="tween.js"></script>
+<script src="jquery-3.1.0.js"></script>
+<script>
+    var arr1 = ['Linear','Quad','Cubic','Quart','Quint','Sine','Expo','Circ','Elastic','Back','Bounce'];
+    var arr2 = ['easeIn','easeOut','easeInOut'];
+    var timeArr = [0.5,1,2,3,4,5];
+    var select1 = document.getElementById('select1');
+    var select2 = document.getElementById('select2');
+    var select3 = document.getElementById('select3');
+    var options1 = options2 = options3 = '';
+    for(var i = 0; i < arr1.length; i++){
+        options1 += '<option value="">'+ arr1[i] +'</option>';
+    }
+    for(var j = 0; j < arr2.length; j++){
+        options2 += '<option value="">'+ arr2[j] +'</option>'
+    }
+    for(var jj = 0; jj < timeArr.length; jj++){
+        options3 += '<option value="">'+ timeArr[jj] +'</option>'
+    }
+    select1.innerHTML = options1;
+    select2.innerHTML = options2;
+    select3.innerHTML = options3;
+
+    //检查是否有第二个值
+    setInterval(function () {
+        if( $('#select1 option:selected').text() == 'Linear'){
+            select2.setAttribute('disabled','disabled');
+        }else {
+            select2.removeAttribute('disabled');
+        }
+    },10);
+
+
+    var ballDiv = document.getElementsByClassName('ball');
+
+    //滚动起来
+    function scroll1(t,div,selectValue1,selectValue2,time) {
+        if(selectValue1 == 'Linear'){
+            x=Tween.Linear(t,0,700,100);
+        }else {
+            //Tween.Cubic.easeOut(t,0,700,100);
+            x=Tween[selectValue1][selectValue2](t,0,700,100);
+        }
+        div.style.left = x + 'px';
+    }
+    //点击开始测试
+    function test(){
+        var x = 0, t = 0,setInt1 ;
+        var selectValue1 = $('#select1 option:selected').text();
+        var selectValue2 = $('#select2 option:selected').text();
+        var time = $('#select3 option:selected').text();
+        console.log(selectValue1,selectValue2,time);
+
+        setInt1 = setInterval(function () {
+            t++;
+            if(t==100){
+                clearInterval(setInt1);
+            }
+            scroll1(t,ballDiv[0],selectValue1,selectValue2);
+        },time*10);  //比如time=1； 1*10*100步=1000毫秒
+
+    }
+
+
+
+</script>
+</body>
+</html>
